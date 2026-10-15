@@ -4,7 +4,7 @@
 # The crate is a static library that resolves BoringSSL at runtime inside
 # keystore2, so the build needs only BoringSSL's headers (openssl-sys bindgens the
 # FFI from them) — no libcrypto.so of any ABI. Configure via environment:
-#   NDK_HOME   Android NDK (default: newest under $ANDROID_HOME/ndk)
+#   NDK_HOME   Android NDK (default: $ANDROID_NDK_HOME, else newest under $ANDROID_HOME/ndk)
 #   ABI        Android ABI (default: arm64-v8a)
 #   API        platform level (default: 29)
 #   BORINGSSL  BoringSSL source dir with include/ (cloned if unset/missing)
@@ -24,7 +24,17 @@ case "$ABI" in
 esac
 ENVPREFIX="$(echo "$TRIPLE" | tr '[:lower:]-' '[:upper:]_')"
 
+# Resolve the NDK once, in priority order: an explicit NDK_HOME, then the NDK the environment
+# already pins (CI exports ANDROID_NDK_HOME at the version its workflow installs), and only then
+# the newest installed one. The newest is not always usable: the GitHub runner image ships
+# several NDKs side by side, and picking up a newer-than-pinned one can fail the build
+# outright — NDK r30's sysroot rejects the unversioned target triple bindgen derives
+# from cargo's TARGET (openssl-sys bindgens the BoringSSL FFI through it), which breaks
+# `build.sh clippy` before anything compiles.
 if [ -z "${NDK_HOME:-}" ]; then
+  NDK_HOME="${ANDROID_NDK_HOME:-}"
+fi
+if [ -z "$NDK_HOME" ]; then
   NDK_HOME="$(ls -d "${ANDROID_HOME:-$HOME/Android/Sdk}"/ndk/* 2>/dev/null | sort -V | tail -1)"
 fi
 [ -d "$NDK_HOME" ] || { echo "NDK not found; set NDK_HOME" >&2; exit 1; }
