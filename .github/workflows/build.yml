@@ -202,3 +202,97 @@ jobs:
             echo "Removing $old"
             gh release delete "$old" --yes --cleanup-tag
           done
+
+      # --- telegram distribution -------------------------------------------------------------------
+      #
+      # The same zips the release and canary steps just published go to the Telegram channel as one
+      # media group, so testers can grab a build without a GitHub account. Placed last on purpose:
+      # a tagged release has already stripped the commit hash from the asset names here, so what the
+      # channel receives is named exactly what module/update.json's zipUrl points at.
+      #
+      # No `if` beyond the event filter: a pull_request build is a validation, not a distribution,
+      # and a fork's pull request carries no secrets anyway - the guard below skips it either way.
+      - name: Publish artifacts to Telegram
+        if: github.event_name != 'pull_request'
+        env:
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+          TG_THREAD_ID: ${{ secrets.TG_THREAD_ID }}
+          COMMIT_SHA: ${{ github.sha }}
+          RUN_NUMBER: ${{ github.run_number }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+
+          # INFO: The bot exists only once its secrets do; until then this is
+          #       a warning and the artifacts stay on the run page alone.
+          if [ -z "$TG_BOT_TOKEN" ] || [ -z "$TG_CHAT_ID" ]; then
+            echo "::warning::Telegram secrets not configured, skipping publish"
+            exit 0
+          fi
+
+          zips=$(ls out/NeoTEESim-*-Release.zip out/NeoTEESim-*-Debug.zip 2>/dev/null || true)
+          if [ -z "$zips" ]; then
+            echo "::error::No build zips found in out/"
+            exit 1
+          fi
+
+          escape_html() {
+            sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g'
+          }
+
+          COMMIT_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/commit/$COMMIT_SHA"
+
+          # INFO: The commit message quoted whole, the way the channel shows
+          #       it, cut by characters (not bytes) and far enough ahead of
+          #       Telegram's 1024-character caption limit that the escaping
+          #       of the text below cannot push the caption over it.
+          message=$(git log -1 --pretty=%B "$COMMIT_SHA" \
+            | python3 -c "import sys; sys.stdout.write(sys.stdin.read().strip()[:600])" \
+            | escape_html)
+
+          echo "publishing from $(pwd)"
+          ls -la out/
+
+          # INFO: Every zip of the build travels as ONE media group - a single
+          #       message, one caption on its first item, the shape a channel
+          #       reader expects a build to arrive in.
+          count=0
+          doc_args=()
+          for zip in $zips; do
+            doc_args+=(-F "doc$count=@$GITHUB_WORKSPACE/$zip")
+            count=$((count + 1))
+          done
+
+          # INFO: The media list is written to a file by the interpreter and
+          #       handed to curl with the "read the value from this file"
+          #       form, because an inline JSON in the form value does not
+          #       survive the field parser - Telegram answered every inline
+          #       attempt with "can't parse media JSON object", while the
+          #       identical JSON through a file parses and ships.
+          CAPTION="<b>NeoTEESim</b>"$'\n'"Run: #$RUN_NUMBER"$'\n\n'"<blockquote>$message</blockquote>"$'\n\n'"<a href=\"$COMMIT_URL\">Commit</a>"$'\n'"<a href=\"$RUN_URL\">Workflow run</a>" \
+            python3 -c 'import json, sys, os; n = int(sys.argv[1]); m = [{"type": "document", "media": "attach://doc%d" % i} for i in range(n)]; m[-1]["caption"] = os.environ["CAPTION"]; m[-1]["parse_mode"] = "HTML"; open(sys.argv[2], "w").write(json.dumps(m))' "$count" "$GITHUB_WORKSPACE/tg_media.json"
+
+          curl_args=(-sS -o tg_response.json -w '%{http_code}'
+                     --form-string "chat_id=$TG_CHAT_ID"
+                     -F 'media=<tg_media.json'
+                     "${doc_args[@]}")
+
+          if [ -n "$TG_THREAD_ID" ]; then
+            curl_args+=(--form-string "message_thread_id=$TG_THREAD_ID")
+          fi
+
+          curl_args+=("https://api.telegram.org/bot$TG_BOT_TOKEN/sendMediaGroup")
+
+          # INFO: A Telegram hiccup must not fail a build that already
+          #       produced its artifacts: warn and keep the delivery to the
+          #       next run instead of failing the build over it.
+          http=$(curl "${curl_args[@]}" 2>curl_err.txt) || http="curl-failed"
+
+          if [ "$http" != "200" ]; then
+            echo "::warning::Telegram upload failed ($http)"
+            [ -s curl_err.txt ] && echo "::warning::curl: $(cat curl_err.txt)"
+            [ -s tg_response.json ] && echo "::warning::Telegram said: $(head -c 400 tg_response.json)"
+          else
+            echo "Sent $count zips as one media group: $(head -c 160 tg_response.json)"
+          fi
