@@ -59,10 +59,10 @@ object Report {
     fun logHeader() {
         val body = header()
         SystemLogger.info(
-            "Report: === TEESimulator session begin — paste everything down to \"session end\" ==="
+            "Report: === NeoTEESim session begin — paste everything down to \"session end\" ==="
         )
         body.forEach { SystemLogger.info("Report: $it") }
-        SystemLogger.info("Report: === TEESimulator session end (${body.size} lines) ===")
+        SystemLogger.info("Report: === NeoTEESim session end (${body.size} lines) ===")
     }
 
     /**
@@ -85,7 +85,7 @@ object Report {
 
             entry(
                 "header.txt",
-                (listOf("=== TEESimulator report ===") + header()).joinToString("\n") + "\n",
+                (listOf("=== NeoTEESim report ===") + header()).joinToString("\n") + "\n",
             )
 
             // The rotation, oldest first, each part its own entry so a reader can open just the

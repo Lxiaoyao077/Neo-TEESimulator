@@ -15,7 +15,7 @@ import org.json.JSONObject
  */
 object Updater {
 
-    private const val REPO = "JingMatrix/TEESimulator"
+    private const val REPO = "Lxiaoyao077/Neo-TEESimulator"
     private const val API = "https://api.github.com/repos/$REPO/releases?per_page=30"
 
     /** The installed module's versionCode (git commit count), read from its module.prop. */
@@ -59,7 +59,7 @@ object Updater {
         c.readTimeout = 20000
         c.instanceFollowRedirects = true
         c.setRequestProperty("Accept", "application/vnd.github+json")
-        c.setRequestProperty("User-Agent", "TEESimulator")
+        c.setRequestProperty("User-Agent", "NeoTEESim")
         c.inputStream.use {
             return it.readBytes().toString(Charsets.UTF_8)
         }
@@ -153,7 +153,7 @@ object Updater {
     private fun download(url: String, dest: File) {
         val c = URL(url).openConnection() as HttpURLConnection
         c.instanceFollowRedirects = true
-        c.setRequestProperty("User-Agent", "TEESimulator")
+        c.setRequestProperty("User-Agent", "NeoTEESim")
         c.connectTimeout = 15000
         c.readTimeout = 120000
         c.inputStream.use { input -> dest.outputStream().use { input.copyTo(it) } }

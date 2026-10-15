@@ -106,7 +106,7 @@ fn init_logging() {
         std::panic::set_hook(Box::new(|info| {
             // `log` has no Fatal, so a panic — the one thing here that really is fatal, unwinding
             // inside keystore2 — could only ever be logged as an error. Emit it at FATAL directly,
-            // where `grep -E " [WEF] TEESimulator"` and the collector's crash handling both find it.
+            // where `grep -E " [WEF] NeoTEESim"` and the collector's crash handling both find it.
             emit(PRIO_FATAL, "ta", &format!("panic: {info}"));
         }));
     });

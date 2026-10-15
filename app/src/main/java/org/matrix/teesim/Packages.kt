@@ -365,7 +365,7 @@ object Packages {
      * Every installed package name on the device, in every user, for the auto-include baseline
      * seed. Empty on failure so a broken enumeration never seeds an empty baseline that later
      * mislabels everything new. The set is user-agnostic on purpose: the baseline answers "did this
-     * app exist when TEESimulator first ran", which is a question about the app, not about one
+     * app exist when NeoTEESim first ran", which is a question about the app, not about one
      * user's copy.
      */
     fun allInstalledPackageNames(): Set<String> {

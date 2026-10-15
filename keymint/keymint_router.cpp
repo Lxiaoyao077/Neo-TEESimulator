@@ -928,8 +928,8 @@ class TeesimKeyMintDevice : public BnKeyMintDevice {
     }
     info->versionNumber = 400;
     info->securityLevel = level_;
-    info->keyMintName = "TEESimulator";
-    info->keyMintAuthorName = "TEESimulator";
+    info->keyMintName = "NeoTEESim";
+    info->keyMintAuthorName = "NeoTEESim";
     info->timestampTokenRequired = false;
     return ndk::ScopedAStatus::ok();
   }

@@ -103,7 +103,7 @@ bool RateOk(const char* sub) {
       if (missed != 0) {
         // Reported straight to liblog rather than through teesim_log, which would re-enter here.
         const int64_t since = b.drop_since_ms.load(std::memory_order_relaxed);
-        __android_log_print(ANDROID_LOG_WARN, "TEESimulator",
+        __android_log_print(ANDROID_LOG_WARN, "NeoTEESim",
                             "%s RateOk: rate limit dropped %u D/V line(s) over %lldms",
                             sub != nullptr ? sub : "", missed,
                             static_cast<long long>(since != 0 ? now - since : 0));
@@ -146,5 +146,5 @@ extern "C" void teesim_log(int prio, const char* sub, const char* fmt, ...) {
       memcpy(buf + sizeof(buf) - 4, "\xe2\x80\xa6", 4);
     }
   }
-  __android_log_write(prio, "TEESimulator", buf);
+  __android_log_write(prio, "NeoTEESim", buf);
 }

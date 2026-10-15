@@ -189,13 +189,13 @@ impl Ta {
         let hw_info = HardwareInfo {
             version_number: 1,
             security_level,
-            impl_name: "TEESimulator KeyMint",
-            author_name: "TEESimulator",
-            unique_id: "TEESimulator KeyMint TA",
+            impl_name: "NeoTEESim KeyMint",
+            author_name: "NeoTEESim",
+            unique_id: "NeoTEESim KeyMint TA",
         };
         let rpc_info = RpcInfoV3 {
-            author_name: "TEESimulator",
-            unique_id: "TEESimulator KeyMint TA",
+            author_name: "NeoTEESim",
+            unique_id: "NeoTEESim KeyMint TA",
             fused: false,
             supported_num_of_keys_in_csr: MINIMUM_SUPPORTED_KEYS_IN_CSR,
         };

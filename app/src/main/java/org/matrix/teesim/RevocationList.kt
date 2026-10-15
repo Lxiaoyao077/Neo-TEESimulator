@@ -145,7 +145,7 @@ object RevocationList {
         c.setRequestProperty("Accept", "application/json")
         c.setRequestProperty("Cache-Control", "no-cache")
         c.setRequestProperty("Pragma", "no-cache")
-        c.setRequestProperty("User-Agent", "TEESimulator")
+        c.setRequestProperty("User-Agent", "NeoTEESim")
         c.inputStream.use {
             return it.readBytes().toString(Charsets.UTF_8)
         }

@@ -1,6 +1,6 @@
-# TEESimulator
+# NeoTEESim
 
-*TEESimulator* defeats hardware-backed [Key Attestation](https://developer.android.com/privacy-and-security/security-key-attestation) by serving selected apps from a software KeyMint that runs *inside* the real keystore daemon, while every other key stays on the device's real hardware.
+*NeoTEESim* defeats hardware-backed [Key Attestation](https://developer.android.com/privacy-and-security/security-key-attestation) by serving selected apps from a software KeyMint that runs *inside* the real keystore daemon, while every other key stays on the device's real hardware.
 
 Rather than patch certificates after the fact, it embeds AOSP's own reference KeyMint trusted application ([`kmr-ta`](https://cs.android.com/android/platform/superproject/main/+/main:system/keymint/)) and signs attestations with a user-provided keybox. The certificates are generated the same way a real TEE generates them, so they are internally consistent by construction.
 
@@ -101,13 +101,13 @@ Where the root manager supports it (KernelSU, APatch), the module ships a WebUI 
 The build depends on no device: `libbinder_ndk` and `liblog` come from the NDK, and BoringSSL is either resolved at runtime (Android 12+) or built as a static library from the submodule (Android 10/11). It needs only the SDK (for `aidl`) and the NDK.
 
 ```sh
-git clone --recurse-submodules <repo> TEESimulator
-cd TEESimulator
+git clone --recurse-submodules <repo> NeoTEESim
+cd NeoTEESim
 
 export ANDROID_HOME=/path/to/android/sdk        # SDK: aidl, cmake, the daemon's AGP build
 export ANDROID_NDK_HOME=/path/to/android/ndk    # or the newest NDK under $ANDROID_HOME/ndk
 
-./gradlew zipRelease                            # -> out/TEESimulator-<version>-<count>-<hash>-Release.zip
+./gradlew zipRelease                            # -> out/NeoTEESim-<version>-<count>-<hash>-Release.zip
 ```
 
 The whole build is one Gradle graph. `zipRelease` (or `zipDebug`, which bundles extra logging) builds the Rust TA, both native interceptors for `arm64-v8a` and `x86_64` (via CMake `externalNativeBuild`), and the control daemon's dex, then assembles the flashable module. With a device attached, `./gradlew installMagisk` (or `installKsu` / `installApatch`) pushes and installs it; append `AndReboot` to reboot after, and set `ANDROID_SERIAL=<serial>` to pick a device when several are connected.
@@ -126,6 +126,6 @@ The whole build is one Gradle graph. `zipRelease` (or `zipDebug`, which bundles 
 
 ## License
 
-TEESimulator is free software, licensed under the [GNU General Public License v3.0](LICENSE) or
+NeoTEESim is free software, licensed under the [GNU General Public License v3.0](LICENSE) or
 any later version. The third-party code it builds on — the AOSP submodules, BoringSSL, LSPlt and
 the vendored platform headers — is listed with its own terms in [NOTICE](NOTICE).

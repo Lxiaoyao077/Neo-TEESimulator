@@ -5,7 +5,7 @@ import java.io.File
 /**
  * The daemon's view onto the device log, for the WebUI's Logs panel. It no longer spawns a `logcat`
  * child: an in-process native reader ([nativeRun], in libteesim_logcat.so) reads logd directly
- * through liblog's reader API, filters in C to the lines we keep — every `TEESimulator` line (the
+ * through liblog's reader API, filters in C to the lines we keep — every `NeoTEESim` line (the
  * daemon, the TA and both native interceptors log under that tag), `AndroidRuntime` and fatal-level
  * lines (Java/native crash reports), and, once the interceptor is injected, every line from the
  * target keystore process ([targetPid]) — and serves them two ways: a bounded ring the WebUI polls

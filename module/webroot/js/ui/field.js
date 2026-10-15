@@ -252,7 +252,7 @@ function scopeWidget(d, value, ctx) {
   // count so it stops claiming apps are added "automatically" when there are none.
   if (ctx.autoInclude) {
     kids.push(el("span", { class: "muted small", text: autoCount
-      ? "Auto-include on — " + autoCount + (autoCount === 1 ? " app" : " apps") + " installed since TEESimulator started " +
+      ? "Auto-include on — " + autoCount + (autoCount === 1 ? " app" : " apps") + " installed since NeoTEESim started " +
         (autoCount === 1 ? "is" : "are") + " also in scope."
       : "Auto-include on — no new apps in scope yet." }));
   }

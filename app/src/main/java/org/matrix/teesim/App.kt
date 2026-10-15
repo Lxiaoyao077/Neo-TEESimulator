@@ -369,7 +369,7 @@ object App {
                     // delete the alias and mint a fresh key, losing everything the old one had
                     // encrypted. So this is not a quiet "nothing to do" state.
                     SystemLogger.error(
-                        "App: no valid config to push — keys minted by TEESimulator cannot be used until " +
+                        "App: no valid config to push — keys minted by NeoTEESim cannot be used until " +
                             "one exists, and an app that gives up on such a key may regenerate it " +
                             "and lose the data it had encrypted. Fix config.json/the keybox."
                     )

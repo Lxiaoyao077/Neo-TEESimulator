@@ -15,7 +15,7 @@ const MAX_KEPT = 4000;
 const SAVE_DIR_KEY = "teesim.logs.dir";
 const DEFAULT_SAVE_DIR = "/sdcard/Download";
 
-// The default export filename: TEESimulator-report-<version>-<variant>-<timestamp>.zip. The module
+// The default export filename: NeoTEESim-report-<version>-<variant>-<timestamp>.zip. The module
 // version already embeds the variant, e.g. "v4.0 (17-0375393-debug)"; sanitize it into a
 // filename-safe token (drop parens, spaces/others -> dashes) and append a local timestamp.
 function defaultLogName(version) {
@@ -25,7 +25,7 @@ function defaultLogName(version) {
       .trim()
       .replace(/[^A-Za-z0-9._-]+/g, "-")
       .replace(/^-+|-+$/g, "") || "unknown";
-  return `TEESimulator-report-${tag}-${timestamp()}.zip`;
+  return `NeoTEESim-report-${tag}-${timestamp()}.zip`;
 }
 
 function timestamp() {
@@ -51,7 +51,7 @@ export function create(mount) {
   // injected process's own tags (keystore2, etc.) too, and V/D never gets dropped from the file
   // (see LogTail.kt) — but a first look at the panel wants the daemon's own decisions, not the
   // seams beneath them or another process's chatter. Both stay one tap away in the filter sheet.
-  let filter = { minLevel: "I", tags: new Set(["TEESimulator"]), text: "" };
+  let filter = { minLevel: "I", tags: new Set(["NeoTEESim"]), text: "" };
   let filterHost = null;    // content element inside the filter sheet
   let filterOverlay = null; // { close } while the sheet is open
   let saveHost = null;      // content element inside the save sheet
@@ -155,7 +155,7 @@ export function create(mount) {
     },
     setText(v) { filter.text = v; render(); },
     reset() {
-      filter = { minLevel: "I", tags: new Set(["TEESimulator"]), text: "" };
+      filter = { minLevel: "I", tags: new Set(["NeoTEESim"]), text: "" };
       renderFilterSheet();
       render();
     },

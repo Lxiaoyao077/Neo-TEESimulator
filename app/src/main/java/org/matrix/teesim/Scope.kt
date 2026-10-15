@@ -241,7 +241,7 @@ object Scope {
 
         // Auto-include (future-installs only): a user-app uid (an app id >= FIRST_APP_UID, in any
         // Android user) is folded in ONLY when NONE of its package names was present at the
-        // baseline — i.e. the app was installed AFTER TEESimulator first ran — and no OTHER profile
+        // baseline — i.e. the app was installed AFTER NeoTEESim first ran — and no OTHER profile
         // claims it and this profile does not already name it. The baseline (known_packages.json,
         // seeded once) is what makes this "new apps only": every app that already existed is by
         // definition in the baseline and never auto-added. The baseline holds bare package names,
@@ -399,7 +399,7 @@ object Scope {
     @Volatile private var baselineCache: Set<String>? = null
 
     /**
-     * The set of package names that existed when TEESimulator first ran, read from
+     * The set of package names that existed when NeoTEESim first ran, read from
      * [Const.knownPackagesFile]. Seeds the file — with every currently-installed package name — the
      * first time it is absent, then persists it, so the "future-installs only" auto-include has a
      * fixed frame of reference. Call once at daemon start (before the first resolve) to freeze the
@@ -459,7 +459,7 @@ object Scope {
                 // those — the packages that exist in some other user and not in the primary one.
                 //
                 // Emphatically NOT today's whole enumeration. The baseline's meaning is "what
-                // existed when TEESimulator first ran", and user 0's part of it is already recorded
+                // existed when NeoTEESim first ran", and user 0's part of it is already recorded
                 // accurately;
                 // merging user 0's CURRENT list would advance that frame of reference to now,
                 // marking every app installed since the seed as pre-existing and silently dropping

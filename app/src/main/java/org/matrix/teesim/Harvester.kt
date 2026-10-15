@@ -42,7 +42,7 @@ import org.json.JSONObject
 object Harvester {
 
     private const val OID = "1.3.6.1.4.1.11129.2.1.17"
-    private const val CHECK_ALIAS = "TEESimulator_AttestationCheck"
+    private const val CHECK_ALIAS = "NeoTEESim_AttestationCheck"
 
     // KeyDescription SEQUENCE field indices.
     private const val KD_ATTEST_VERSION = 0

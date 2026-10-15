@@ -356,7 +356,7 @@ function updateCard(s, actions) {
   return card;
 }
 
-const REPO_URL = "https://github.com/JingMatrix/TEESimulator";
+const REPO_URL = "https://github.com/Lxiaoyao077/Neo-TEESimulator";
 
 function whatsNew(latest) {
   const nodes = [];

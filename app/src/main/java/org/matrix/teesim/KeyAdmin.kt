@@ -750,7 +750,7 @@ object KeyAdmin {
         return JSONObject().put("ok", true).put("deleted", alias)
     }
 
-    /** Recent TEESimulator logcat lines with seq greater than `after`, for the WebUI's Logs tab. */
+    /** Recent NeoTEESim logcat lines with seq greater than `after`, for the WebUI's Logs tab. */
     private fun logs(query: Map<String, String>): JSONObject {
         val after = query["after"]?.toLongOrNull() ?: 0L
         val max = (query["max"]?.toIntOrNull() ?: 500).coerceIn(1, 2000)

@@ -1,6 +1,6 @@
 # third_party
 
-Everything TEESimulator depends on but doesn't author. All of it is a git submodule
+Everything NeoTEESim depends on but doesn't author. All of it is a git submodule
 (`git submodule update --init --recursive`), pinned to a specific upstream commit so a
 build is reproducible. Nothing here is edited in git — except the build-time
 patches called out below.

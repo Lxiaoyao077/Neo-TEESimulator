@@ -1,7 +1,7 @@
 // In-process log reader for the control daemon.
 //
 // The daemon used to tail logs by spawning a `logcat` child and reading its stdout in Kotlin, with a
-// filterspec of `TEESimulator:V *:I`. That pulls the WHOLE device log stream through a pipe and
+// filterspec of `NeoTEESim:V *:I`. That pulls the WHOLE device log stream through a pipe and
 // regex-filters it in the JVM, so any flood — e.g. the KeyAdmin accept loop in #265 — was carried at
 // full volume into the daemon and amplified by the reader that was meant to observe it.
 //
@@ -11,7 +11,7 @@
 // set of rotating files on disk so a crash's context survives a restart and can be downloaded whole.
 //
 // It deliberately does NOT re-capture its own output: the reader emits nothing under the daemon's
-// "TEESimulator" tag (its own status lines go straight into the log file, never back through logd), so
+// "NeoTEESim" tag (its own status lines go straight into the log file, never back through logd), so
 // there is no feedback path for it to spin on. The liblog reader symbols are absent from the NDK stub;
 // they are declared in logcat.h and resolved at runtime against the device's real liblog.so
 // (-Wl,-z,undefs), so nothing here is device-specific.
@@ -51,9 +51,9 @@ constexpr std::array<char, ANDROID_LOG_SILENT + 1> kLogChar = {
 };
 
 // Tags we always keep, whatever the pid: the daemon, the TA and both native interceptors all log under
-// "TEESimulator"; "AndroidRuntime" carries Java crash reports. A native abort (priority FATAL) and the
+// "NeoTEESim"; "AndroidRuntime" carries Java crash reports. A native abort (priority FATAL) and the
 // crash buffer are kept regardless of tag.
-constexpr auto kKeepTags = std::array{"AndroidRuntime"sv, "TEESimulator"sv};
+constexpr auto kKeepTags = std::array{"AndroidRuntime"sv, "NeoTEESim"sv};
 
 // One field separator the WebUI parse splits on. Neither a tag nor a log message contains it.
 constexpr char kSep = '\x01';
@@ -351,7 +351,7 @@ void Logcat::Run() {
                 AndroidLogEntry peek;
                 if (android_log_processLogBuffer(&msg.entry, &peek) >= 0) {
                     std::string_view t(peek.tag, peek.tagLen > 0 ? peek.tagLen - 1 : 0);
-                    if (t == "TEESimLog"sv) continue;
+                    if (t == "NeoTEESimLog"sv) continue;
                 }
             }
             Process(&msg);

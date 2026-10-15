@@ -1,11 +1,11 @@
-## 🎉 TEESimulator 4.0 — a new foundation
+## 🎉 NeoTEESim 4.0 — a new foundation
 
-Ever since TEESimulator began, the community has watched me pour real effort into closing
+Ever since NeoTEESim began, the community has watched me pour real effort into closing
 pre-existing detection points, release after release. But as AI-driven conformance scanners multiply
 and quick "harness fix" commits go viral, it has grown exhausting to fold in a stream of unproven,
 poorly-explained external patches — innovation stalled, and code quality slipped noticeably. 😮‍💨
 
-So here is **TEESimulator 4.0**. 🚀 Instead of faking a hardware backend, it runs AOSP's own KeyMint
+So here is **NeoTEESim 4.0**. 🚀 Instead of faking a hardware backend, it runs AOSP's own KeyMint
 reference implementation — the very trusted application that normally lives *inside* the TEE —
 **in-process**. This single change sweeps away countless detection points at once and, for the first
 time, brings first-class permanent key storage. 🔐

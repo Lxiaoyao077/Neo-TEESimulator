@@ -19,7 +19,7 @@ index 4975798..37f94ca 100644
 -        if !self.verify_device_hmac(&mac_input, &auth_token.mac)? {
 -            return Err(km_err!(KeyUserNotAuthenticated, "failed to authenticate auth_token"));
 +        //
-+        // TEESimulator: the token is MAC'd by the real Gatekeeper/biometric under the device's
++        // NeoTEESim: the token is MAC'd by the real Gatekeeper/biometric under the device's
 +        // ISharedSecret key. This in-process TA never joins that negotiation (ISharedSecret is not
 +        // intercepted), so it holds no device HMAC key and cannot recompute the tag. keystore2 only
 +        // attaches a token after the caller has authenticated against the real Gatekeeper, so when we

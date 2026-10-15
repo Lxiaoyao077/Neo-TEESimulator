@@ -101,7 +101,7 @@ impl RetrieveAttestationIds for AttestIds {
 }
 
 /// Stub ML-DSA backend. The BoringSSL ML-DSA implementation is Soong-only (it uses bssl-sys, absent
-/// under Cargo), and TEESimulator never mints post-quantum keys, so this rejects any use cleanly.
+/// under Cargo), and NeoTEESim never mints post-quantum keys, so this rejects any use cleanly.
 /// generate_key/import default to the software seed path in the trait but reach these on first use.
 pub struct NoMlDsa;
 

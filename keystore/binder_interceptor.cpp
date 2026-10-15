@@ -73,7 +73,7 @@ TransactionHandler HandlerFor(const sp<BBinder>& target) {
 class BinderStub : public BBinder {
  public:
   const String16& getInterfaceDescriptor() const override {
-    static const String16 kDescriptor("org.matrix.TEESimulator.BinderStub");
+    static const String16 kDescriptor("org.matrix.NeoTEESim.BinderStub");
     return kDescriptor;
   }
 

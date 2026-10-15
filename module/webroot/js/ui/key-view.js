@@ -111,7 +111,7 @@ export function renderKeys(mount, state, handler) {
   const vendingUntouched = keys.filter(isUntouchedVendingSignKey);
   if (vendingUntouched.length) {
     mount.appendChild(el("div", { class: "card" }, [el("div", { class: "banner warn" }, [
-      el("div", { text: "Play Integrity may be outside TEESimulator's control." }),
+      el("div", { text: "Play Integrity may be outside NeoTEESim's control." }),
       el("div", { class: "muted small", text:
         "The Play Integrity key (com.android.vending, integrity.api.key.alias) is untouched, so it roots " +
         "in the real TEE and Play Integrity can attest through it, bypassing the keybox. Switch to All and " +

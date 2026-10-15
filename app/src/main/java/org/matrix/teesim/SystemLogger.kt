@@ -18,7 +18,7 @@ import android.util.Log
  * only volume control is the native emitter's rate limiter, which drops repeats, never a category.
  */
 object SystemLogger {
-    private const val TAG = "TEESimulator"
+    private const val TAG = "NeoTEESim"
     private const val SUB = "dmn "
 
     fun verbose(message: String) {

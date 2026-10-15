@@ -150,7 +150,7 @@ daemon has a real `Context` and root that the webview alone does not:
 - **`Updater`** — canary self-update: checks the rolling `canary-<code>` GitHub prereleases,
   reports the installed version, and downloads-and-flashes a chosen build through the root
   manager on request.
-- **`LogTail`** — tails logcat (our `TEESimulator` tag, SELinux `avc` denials, and the injected
+- **`LogTail`** — tails logcat (our `NeoTEESim` tag, SELinux `avc` denials, and the injected
   keystore pid) into a bounded ring buffer the WebUI polls and filters.
 
 ## Support
@@ -159,7 +159,7 @@ daemon has a real `Context` and root that the webview alone does not:
   (osVersion, patch levels), plus the config patch mini-language resolution.
 - **`Const`** — paths, the control port, and the security-level encodings shared with the native
   side.
-- **`SystemLogger`** — logcat under the single `TEESimulator` tag the whole module logs to.
+- **`SystemLogger`** — logcat under the single `NeoTEESim` tag the whole module logs to.
 
 ## Building
 

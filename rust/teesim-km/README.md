@@ -178,7 +178,7 @@ encoding:
 across an `extern "C"` boundary is undefined behavior, and this code runs *inside*
 keystore — a panic that escaped would take the daemon down. `catch_unwind` turns a
 panic into a null handle or an error code instead. `teesim_km_init` also installs a
-panic hook that logs to logcat under the `TEESimulator` tag.
+panic hook that logs to logcat under the `NeoTEESim` tag.
 
 ## Wire format and tag numbers
 

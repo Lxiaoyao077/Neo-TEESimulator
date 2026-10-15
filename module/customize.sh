@@ -3,7 +3,7 @@
 # The interceptor is a 64-bit library injected into the keystore daemon, which is 64-bit on every
 # supported device; refuse 32-bit-only devices rather than fail silently.
 if [ "$ARCH" != "arm64" ] && [ "$ARCH" != "x64" ]; then
-  abort "! TEESimulator requires a 64-bit device"
+  abort "! NeoTEESim requires a 64-bit device"
 fi
 
 # TrickyStore intercepts the same keystore path; running both would double-hook it. Disable it via
