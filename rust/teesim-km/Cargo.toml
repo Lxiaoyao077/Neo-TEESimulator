@@ -26,7 +26,7 @@ openssl-sys = { version = "0.9.117", features = ["bindgen"] }
 log = "0.4"
 libc = "0.2"
 
-roxmltree = "0.20"
+roxmltree = "0.21"
 base64 = "0.23"
 
 # X.509 assembly for patch mode: re-signing the real hardware attestation leaf under the keybox.
